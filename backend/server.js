@@ -20,7 +20,7 @@ app.use("/api/user", userRouter);
 
 // test api end point
 app.get("/", (req, res) => {
-  res.send("API is running for my portfolio app...");
+  res.send("Portfolio backend is running successfully...");
 });
 
 const port = process.env.PORT || 4000;
