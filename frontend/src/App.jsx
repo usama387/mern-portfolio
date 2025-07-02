@@ -1,16 +1,19 @@
 import React from "react";
-import Login from "./pages/Login";
 import { useSelector } from "react-redux";
+import Home from "./pages/Home";
+import { Route, Routes } from "react-router-dom";
 
-const Home = () => {
+const App = () => {
   const { user } = useSelector((store) => store?.auth);
   console.log(user);
 
   return (
     <div className="">
-      <Login />
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
     </div>
   );
 };
 
-export default Home;
+export default App;
