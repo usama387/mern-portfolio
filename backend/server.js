@@ -16,7 +16,7 @@ app.use(cookieParser());
 
 // Allow ALL origins
 const allowedOrigins = [
-  "https://ai-blood-flow-frontend.vercel.app", // Production
+  // "https://ai-blood-flow-frontend.vercel.app", // Production
   "http://localhost:5173", // Local Vite dev
 ];
 
