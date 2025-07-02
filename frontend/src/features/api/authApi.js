@@ -50,7 +50,7 @@ export const authApi = createApi({
     }),
     getUserProfileDetails: builder.query({
       query: () => ({
-        url: "getProfile",
+        url: "/getProfile",
         method: "GET",
       }),
       async onQueryStarted(_, { queryFulfilled, dispatch }) {
