@@ -3,9 +3,12 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/user.router.js";
 import cors from "cors";
+import connectToCloudinary from "./utils/Cloudinary.js";
+import projectRouter from "./routes/project.route.js";
 
 // App Config
 const app = express();
+connectToCloudinary();
 
 // to access environment variables in .env file
 dotenv.config();
@@ -40,6 +43,11 @@ app.options("*", cors(corsOptions));
 
 // user api end point
 app.use("/api/user", userRouter);
+
+// project api end point
+app.use("/api/project", projectRouter);
+
+
 
 // test api end point
 app.get("/", (req, res) => {

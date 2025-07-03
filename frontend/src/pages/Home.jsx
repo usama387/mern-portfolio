@@ -30,6 +30,7 @@ import {
   Briefcase,
   Users,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -63,8 +64,10 @@ const Home = () => {
     { name: "DBMS", icon: Database, category: "Database" },
     { name: "DSA", icon: Zap, category: "Algorithms" },
     { name: "Responsive Design", icon: Smartphone, category: "Design" },
+    { name: "PostgreSQL", icon: Database, category: "Database" },
   ];
 
+  // dummy projects
   const projects = [
     {
       title: "E-Commerce Platform",
@@ -95,6 +98,7 @@ const Home = () => {
     },
   ];
 
+  // dummy testimonials
   const testimonials = [
     {
       name: "Sarah Johnson",
@@ -156,6 +160,8 @@ const Home = () => {
       transition: { duration: 0.5, ease: "easeOut" },
     },
   };
+
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-slate-900 via-gray-900 to-zinc-900">
@@ -245,15 +251,15 @@ const Home = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center py-3 sm:py-4">
               <a href="#top">
-              <motion.div
-                className="text-lg sm:text-xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent"
-                whileHover={{ scale: 1.05 }}
-              >
-                Usama Razaaq
-              </motion.div>
+                <motion.div
+                  className="text-lg sm:text-xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  Usama Razaaq
+                </motion.div>
               </a>
               <div className="hidden md:flex space-x-6 lg:space-x-8">
-                {["About", "Skills", "Featured", "Testimonials", "Contact"].map(
+                {["About", "Skills", "Projects", "Testimonials", "Contact"].map(
                   (item) => (
                     <motion.a
                       key={item}
@@ -526,6 +532,14 @@ const Home = () => {
               ))}
             </div>
           </div>
+          <div className="flex justify-center mt-10">
+            <Button
+              onClick={() => navigate("/projects")}
+              className="px-6 py-3 font-semibold bg-gradient-to-r from-blue-600 via-blue-700 to-cyan-700 hover:from-blue-700 hover:via-blue-800 hover:to-cyan-800 text-white rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300"
+            >
+              View More
+            </Button>
+          </div>
         </section>
 
         {/* About Section */}
@@ -704,6 +718,17 @@ const Home = () => {
                         </div>
                         <div>
                           <p className="text-gray-400 text-sm">Phone</p>
+                          <p className="text-white font-medium">
+                            +923193507558
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-4">
+                        <div className="p-3 rounded-xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10">
+                          <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400" />
+                        </div>
+                        <div>
+                          <p className="text-gray-400 text-sm">WhatsApp</p>
                           <p className="text-white font-medium">
                             +923193507558
                           </p>

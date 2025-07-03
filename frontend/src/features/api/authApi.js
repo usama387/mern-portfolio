@@ -3,8 +3,6 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const backendUrl = import.meta.env.VITE_AUTH_BACKEND_URL;
 
-console.log(backendUrl);
-
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({
