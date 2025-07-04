@@ -18,10 +18,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 // Allow ALL origins
-const allowedOrigins = [
-  // "https://ai-blood-flow-frontend.vercel.app", // Production
-  "http://localhost:5173", // Local Vite dev
-];
+const allowedOrigins = [process.env.PRODUCTION];
 
 const corsOptions = {
   origin: (origin, callback) => {
@@ -46,8 +43,6 @@ app.use("/api/user", userRouter);
 
 // project api end point
 app.use("/api/project", projectRouter);
-
-
 
 // test api end point
 app.get("/", (req, res) => {
