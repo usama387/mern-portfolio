@@ -36,6 +36,7 @@ import {
 } from "@/features/api/projectApi";
 import { toast } from "sonner";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Projects = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -243,6 +244,8 @@ const Projects = () => {
     </Card>
   );
 
+  const { user } = useSelector((store) => store?.auth);
+
   return (
     <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-slate-900 via-gray-900 to-zinc-900">
       {/* Animated Background Elements */}
@@ -400,10 +403,12 @@ const Projects = () => {
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                       >
-                        <Button className="w-full sm:w-auto bg-gradient-to-r from-blue-600 via-blue-700 to-cyan-700 hover:from-blue-700 hover:via-blue-800 hover:to-cyan-800 text-white font-semibold px-6 py-3 rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300">
-                          <Plus className="w-4 h-4 mr-2" />
-                          Add New Project
-                        </Button>
+                        {user && user.role === "ADMIN" && (
+                          <Button className="w-full sm:w-auto bg-gradient-to-r from-blue-600 via-blue-700 to-cyan-700 hover:from-blue-700 hover:via-blue-800 hover:to-cyan-800 text-white font-semibold px-6 py-3 rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300">
+                            <Plus className="w-4 h-4 mr-2" />
+                            Add New Project
+                          </Button>
+                        )}
                       </motion.div>
                     </DialogTrigger>
                     <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto bg-gray-900 border border-white/[0.08] text-white">
