@@ -35,6 +35,7 @@ import {
   useGetAllProjectsQuery,
 } from "@/features/api/projectApi";
 import { toast } from "sonner";
+import { Link } from "react-router-dom";
 
 const Projects = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -57,7 +58,7 @@ const Projects = () => {
     isError,
     refetch,
   } = useGetAllProjectsQuery();
-  
+
   const allProjects = projectsData?.projects || [];
 
   // Mutation for adding project
@@ -654,10 +655,8 @@ const Projects = () => {
                       <h3 className="text-xl font-semibold text-red-400 mb-2">
                         Failed to load projects
                       </h3>
-                      <p className="text-gray-500">
-                        Please try again later
-                      </p>
-                      <Button 
+                      <p className="text-gray-500">Please try again later</p>
+                      <Button
                         onClick={refetch}
                         className="mt-4 bg-red-500/10 hover:bg-red-500/20 text-red-400"
                       >
@@ -782,24 +781,26 @@ const Projects = () => {
                               </div>
 
                               {/* Action Buttons */}
-                              {/* <div className="flex space-x-2">
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  className="flex-1 bg-white/[0.03] border border-white/[0.08] text-gray-300 hover:bg-white/[0.08] hover:border-white/[0.12] hover:text-white text-xs"
-                                >
-                                  <Eye className="w-3 h-3 mr-1" />
-                                  View
-                                </Button>
-                                <Button
-                                  variant="outline"
-                                  size="sm"
-                                  className="flex-1 bg-white/[0.03] border border-white/[0.08] text-gray-300 hover:bg-white/[0.08] hover:border-white/[0.12] hover:text-white text-xs"
-                                >
-                                  <Edit className="w-3 h-3 mr-1" />
-                                  Edit
-                                </Button>
-                              </div> */}
+                              <div className="flex space-x-2">
+                                <Link to={`/projects/${project.id}`}>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="flex-1 bg-white/[0.03] border border-white/[0.08] text-gray-300 hover:bg-white/[0.08] hover:border-white/[0.12] hover:text-white text-xs"
+                                  >
+                                    <Eye className="w-3 h-3 mr-1" />
+                                    View
+                                  </Button>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    className="flex-1 bg-white/[0.03] border border-white/[0.08] text-gray-300 hover:bg-white/[0.08] hover:border-white/[0.12] hover:text-white text-xs"
+                                  >
+                                    <Edit className="w-3 h-3 mr-1" />
+                                    Edit
+                                  </Button>
+                                </Link>
+                              </div>
                             </CardContent>
                           </Card>
                         </motion.div>
