@@ -7,7 +7,6 @@ import Projects from "./pages/Projects";
 import SingleProject from "./pages/SingleProject";
 
 const App = () => {
-  const { user } = useSelector((store) => store?.auth);
   return (
     <div className="">
       <Routes>
