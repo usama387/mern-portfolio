@@ -31,8 +31,11 @@ import {
   Users,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useGetAllProjectsQuery } from "@/features/api/projectApi";
 
 const Home = () => {
+  const { data, isLoading } = useGetAllProjectsQuery();
+
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [formData, setFormData] = useState({
     name: "",
@@ -303,7 +306,6 @@ const Home = () => {
             </div>
           </div>
         </motion.nav>
-
         {/* Hero Section */}
         <section className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20">
           <motion.div
@@ -396,7 +398,6 @@ const Home = () => {
             </motion.div>
           </motion.div>
         </section>
-
         {/* Skills Section */}
         <section id="skills" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
@@ -451,7 +452,6 @@ const Home = () => {
             </div>
           </div>
         </section>
-
         {/* Projects Section */}
         <section id="projects" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
@@ -471,77 +471,115 @@ const Home = () => {
               </p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-              {projects.map((project, index) => (
-                <motion.div
-                  key={project.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.2 }}
-                  viewport={{ once: true }}
-                  whileHover={{ scale: 1.02, y: -5 }}
-                  className="group"
+            {isLoading ? (
+              <div className="flex justify-center items-center h-64">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+              </div>
+            ) : data?.projects?.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+                {/* Get the first 3 projects (or all if less than 3) */}
+                {data.projects.slice(0, 3).map((project, index) => (
+                  <motion.div
+                    key={project.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.2 }}
+                    viewport={{ once: true }}
+                    whileHover={{ scale: 1.02, y: -5 }}
+                    className="group"
+                  >
+                    <Card className="backdrop-blur-xl bg-white/[0.02] border border-white/[0.05] hover:border-blue-500/20 transition-all duration-300 h-full overflow-hidden">
+                      {/* Project Image - Using the first image from imageUrl array */}
+                      <div className="aspect-video bg-gradient-to-br from-blue-500/10 to-cyan-500/10 flex items-center justify-center overflow-hidden">
+                        {project.imageUrl?.[0] ? (
+                          <img
+                            src={project.imageUrl[0]}
+                            alt={project.title}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <Briefcase className="w-12 h-12 text-blue-400" />
+                        )}
+                      </div>
+                      <CardContent className="p-4 sm:p-6">
+                        <h3 className="font-bold text-white mb-2 text-lg sm:text-xl">
+                          {project.title}
+                        </h3>
+                        <p className="text-gray-400 mb-4 text-sm sm:text-base leading-relaxed">
+                          {project.description.length > 150
+                            ? `${project.description.substring(0, 150)}...`
+                            : project.description}
+                        </p>
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {/* Display first 4 technologies to avoid overflow */}
+                          {project.techStack.slice(0, 4).map((tech) => (
+                            <Badge
+                              key={tech}
+                              variant="secondary"
+                              className="bg-blue-500/10 text-blue-300 border-blue-500/20 text-xs"
+                            >
+                              {tech}
+                            </Badge>
+                          ))}
+                          {project.techStack.length > 4 && (
+                            <Badge
+                              variant="secondary"
+                              className="bg-blue-500/10 text-blue-300 border-blue-500/20 text-xs"
+                            >
+                              +{project.techStack.length - 4} more
+                            </Badge>
+                          )}
+                        </div>
+                        <div className="flex space-x-3">
+                          {project.liveUrl && (
+                            <motion.a
+                              href={project.liveUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center text-blue-400 hover:text-blue-300 transition-colors text-sm"
+                              whileHover={{ scale: 1.05 }}
+                            >
+                              <ExternalLink className="w-4 h-4 mr-1" />
+                              Live Demo
+                            </motion.a>
+                          )}
+                          {project.repoUrl && (
+                            <motion.a
+                              href={project.repoUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="flex items-center text-gray-400 hover:text-white transition-colors text-sm"
+                              whileHover={{ scale: 1.05 }}
+                            >
+                              <Github className="w-4 h-4 mr-1" />
+                              Code
+                            </motion.a>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <p className="text-gray-400">No projects found</p>
+              </div>
+            )}
+
+            {/* View More button - Only show if there are more than 3 projects */}
+            {data?.projects?.length > 3 && (
+              <div className="flex justify-center mt-10">
+                <Button
+                  onClick={() => navigate("/projects")}
+                  className="px-6 py-3 font-semibold bg-gradient-to-r from-blue-600 via-blue-700 to-cyan-700 hover:from-blue-700 hover:via-blue-800 hover:to-cyan-800 text-white rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300"
                 >
-                  <Card className="backdrop-blur-xl bg-white/[0.02] border border-white/[0.05] hover:border-blue-500/20 transition-all duration-300 h-full overflow-hidden">
-                    <div className="aspect-video bg-gradient-to-br from-blue-500/10 to-cyan-500/10 flex items-center justify-center">
-                      <Briefcase className="w-12 h-12 text-blue-400" />
-                    </div>
-                    <CardContent className="p-4 sm:p-6">
-                      <h3 className="font-bold text-white mb-2 text-lg sm:text-xl">
-                        {project.title}
-                      </h3>
-                      <p className="text-gray-400 mb-4 text-sm sm:text-base leading-relaxed">
-                        {project.description}
-                      </p>
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {project.technologies.map((tech) => (
-                          <Badge
-                            key={tech}
-                            variant="secondary"
-                            className="bg-blue-500/10 text-blue-300 border-blue-500/20 text-xs"
-                          >
-                            {tech}
-                          </Badge>
-                        ))}
-                      </div>
-                      <div className="flex space-x-3">
-                        <motion.a
-                          href={project.liveUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center text-blue-400 hover:text-blue-300 transition-colors text-sm"
-                          whileHover={{ scale: 1.05 }}
-                        >
-                          <ExternalLink className="w-4 h-4 mr-1" />
-                          Live Demo
-                        </motion.a>
-                        <motion.a
-                          href={project.githubUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center text-gray-400 hover:text-white transition-colors text-sm"
-                          whileHover={{ scale: 1.05 }}
-                        >
-                          <Github className="w-4 h-4 mr-1" />
-                          Code
-                        </motion.a>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-          <div className="flex justify-center mt-10">
-            <Button
-              onClick={() => navigate("/projects")}
-              className="px-6 py-3 font-semibold bg-gradient-to-r from-blue-600 via-blue-700 to-cyan-700 hover:from-blue-700 hover:via-blue-800 hover:to-cyan-800 text-white rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300"
-            >
-              View More
-            </Button>
+                  View More
+                </Button>
+              </div>
+            )}
           </div>
         </section>
-
         {/* About Section */}
         <section id="about" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
@@ -595,7 +633,6 @@ const Home = () => {
             </motion.div>
           </div>
         </section>
-
         {/* Testimonials Section */}
         <section
           id="testimonials"
@@ -666,7 +703,6 @@ const Home = () => {
             </div>
           </div>
         </section>
-
         {/* Contact Section */}
         <section id="contact" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
@@ -867,7 +903,6 @@ const Home = () => {
             </div>
           </div>
         </section>
-
         {/* CTA Section */}
         <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -903,7 +938,6 @@ const Home = () => {
             </Card>
           </motion.div>
         </section>
-
         {/* Footer */}
         <footer className="py-8 sm:py-12 px-4 sm:px-6 lg:px-8 border-t border-white/[0.05]">
           <div className="max-w-6xl mx-auto">
