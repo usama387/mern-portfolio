@@ -781,7 +781,7 @@ const Projects = () => {
                               </div>
 
                               {/* Action Buttons */}
-                              <div className="flex space-x-2">
+                              <div className="flex space-x-2 justify-end">
                                 <Link to={`/projects/${project.id}`}>
                                   <Button
                                     variant="outline"
@@ -791,14 +791,14 @@ const Projects = () => {
                                     <Eye className="w-3 h-3 mr-1" />
                                     View
                                   </Button>
-                                  <Button
+                                  {/* <Button
                                     variant="outline"
                                     size="sm"
                                     className="flex-1 bg-white/[0.03] border border-white/[0.08] text-gray-300 hover:bg-white/[0.08] hover:border-white/[0.12] hover:text-white text-xs"
                                   >
                                     <Edit className="w-3 h-3 mr-1" />
                                     Edit
-                                  </Button>
+                                  </Button> */}
                                 </Link>
                               </div>
                             </CardContent>
