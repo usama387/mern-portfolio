@@ -1,7 +1,7 @@
 import express from "express";
 import isUserAuthenticated from "../middleware/isUserAuthenticated.js";
 import upload from "../middleware/multer.js";
-import { addProject, getAllProjects } from "../controllers/project.controller.js";
+import { addProject, getAllProjects, getProjectById } from "../controllers/project.controller.js";
 
 const projectRouter = express.Router();
 
@@ -18,5 +18,6 @@ projectRouter.post(
   addProject
 );
 projectRouter.get("/getAllProjects", getAllProjects)
+projectRouter.get("/getProject/:id", getProjectById)
 
 export default projectRouter;

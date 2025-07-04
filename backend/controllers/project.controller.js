@@ -62,3 +62,33 @@ export const getAllProjects = async (_, res) => {
     });
   }
 };
+
+export const getProjectById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Project ID is required" });
+    }
+
+    const project = await prisma.project.findUnique({
+      where: { id },
+    });
+
+    if (!project) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Project not found" });
+    }
+
+    res.status(200).json({ success: true, project });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      messaage: "Internal server error while fetching project",
+    });
+  }
+};
