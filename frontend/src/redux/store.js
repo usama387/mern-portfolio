@@ -10,10 +10,10 @@ export const appStore = configureStore({
 });
 
 // this api end point is hit when page is reloaded to keep user authenticated
-const initializeApp = async () => {
-  await appStore.dispatch(
-    authApi.endpoints.getUserProfileDetails.initiate({}, { forceRefetch: true })
-  );
-};
+// const initializeApp = async () => {
+//   await appStore.dispatch(
+//     authApi.endpoints.getUserProfileDetails.initiate({}, { forceRefetch: true })
+//   );
+// };
 
-initializeApp();
+// initializeApp();
