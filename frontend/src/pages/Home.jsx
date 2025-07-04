@@ -568,16 +568,14 @@ const Home = () => {
             )}
 
             {/* View More button - Only show if there are more than 3 projects */}
-            {data?.projects?.length > 3 && (
-              <div className="flex justify-center mt-10">
-                <Button
-                  onClick={() => navigate("/projects")}
-                  className="px-6 py-3 font-semibold bg-gradient-to-r from-blue-600 via-blue-700 to-cyan-700 hover:from-blue-700 hover:via-blue-800 hover:to-cyan-800 text-white rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300"
-                >
-                  View More
-                </Button>
-              </div>
-            )}
+            <div className="flex justify-center mt-10">
+              <Button
+                onClick={() => navigate("/projects")}
+                className="px-6 py-3 font-semibold bg-gradient-to-r from-blue-600 via-blue-700 to-cyan-700 hover:from-blue-700 hover:via-blue-800 hover:to-cyan-800 text-white rounded-xl shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 transition-all duration-300"
+              >
+                View More
+              </Button>
+            </div>
           </div>
         </section>
         {/* About Section */}
