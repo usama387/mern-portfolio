@@ -32,6 +32,11 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useGetAllProjectsQuery } from "@/features/api/projectApi";
+import { useSelector } from "react-redux";
+import {
+  useLoginUserMutation,
+  useLogoutUserMutation,
+} from "@/features/api/authApi";
 
 const Home = () => {
   const { data, isLoading } = useGetAllProjectsQuery();
@@ -164,7 +169,24 @@ const Home = () => {
     },
   };
 
+  // for navigation
   const navigate = useNavigate();
+
+  // to access user state
+  const { user } = useSelector((store) => store?.auth);
+
+  // user logout function and its trigger
+  const [logoutUser] = useLogoutUserMutation();
+
+  const handleLogout = async () => {
+    try {
+      await logoutUser().unwrap();
+      navigate("/login");
+      window.location.reload(); 
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+  };
 
   return (
     <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-slate-900 via-gray-900 to-zinc-900">
@@ -277,11 +299,32 @@ const Home = () => {
                 )}
               </div>
               <motion.div
-                className="flex space-x-3 sm:space-x-4"
+                className="flex space-x-3 sm:space-x-4 items-center"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
               >
+                {/* Login and logout button */}
+                {!user ? (
+                  <motion.a
+                    href="/login"
+                    className="px-4 py-1.5 sm:py-2 text-sm sm:text-base font-medium rounded-full bg-gradient-to-r from-white/20 to-white/10 text-white backdrop-blur hover:from-white/30 hover:to-white/20 transition-all border border-white/10"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Login
+                  </motion.a>
+                ) : (
+                  <motion.a
+                    href="/login"
+                    className="px-4 py-1.5 sm:py-2 text-sm sm:text-base font-medium rounded-full bg-gradient-to-r from-white/20 to-white/10 text-white backdrop-blur hover:from-white/30 hover:to-white/20 transition-all border border-white/10"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </motion.a>
+                )}
                 <motion.a
                   href="https://github.com/usama387"
                   target="_blank"

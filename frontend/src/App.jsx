@@ -1,5 +1,4 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import Home from "./pages/Home";
 import { Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";

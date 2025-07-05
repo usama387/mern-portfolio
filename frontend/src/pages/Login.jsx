@@ -17,6 +17,8 @@ import {
   useRegisterUserMutation,
 } from "@/features/api/authApi";
 import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Login = () => {
   // State management
@@ -58,8 +60,11 @@ const Login = () => {
     },
   ] = useLoginUserMutation();
 
+  const navigate = useNavigate();
+
+  const { user } = useSelector((store) => store?.auth);
+
   // Handle API response for registeration
-  // Handle API responses
   useEffect(() => {
     // Registration responses
     if (successInRegistration) {
@@ -81,8 +86,8 @@ const Login = () => {
 
     // Login responses
     if (successInLogin) {
-      toast.success("Welcome Back!");
-      // Here you would typically redirect or set user state
+      toast.success(`Welcome back ${user.name}!`);
+      navigate("/");
     }
 
     if (loginError) {

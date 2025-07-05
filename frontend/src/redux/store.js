@@ -2,7 +2,6 @@ import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "./rootReducer";
 import { authApi } from "@/features/api/authApi";
 import { projectApi } from "@/features/api/projectApi";
-import Cookies from "js-cookie";
 
 export const appStore = configureStore({
   reducer: rootReducer,
@@ -10,21 +9,21 @@ export const appStore = configureStore({
     defaultMiddleware().concat(authApi.middleware, projectApi.middleware),
 });
 
-// this api end point is hit when page is reloaded to keep user authenticated
+// This API endpoint is hit when the page is reloaded to keep the user authenticated
 const initializeApp = async () => {
-  const token = Cookies.get("token");
-
-  if (!token) {
-    console.log("No token found. Skipping user profile fetch.");
-    return; // Don't try to fetch profile if not logged in
-  }
-
   try {
-    await appStore.dispatch(
+    const result = await appStore.dispatch(
       authApi.endpoints.getUserProfileDetails.initiate({}, { forceRefetch: true })
     );
+
+    // Gracefully ignore 401 errors for unauthenticated users
+    if ('error' in result && result.error.status !== 401) {
+      // Log only unexpected errors
+      console.error("Unexpected error while fetching user:", result.error);
+    }
+
   } catch (err) {
-    console.error("Failed to fetch user profile:", err);
+    console.error("Error in initializeApp:", err);
   }
 };
 
